@@ -1,3 +1,4 @@
 #! /bin/bash
 
-sh ./tests/*.sh
+sh ./tests/authenticate_test.sh
+sh ./tests/applications_test.sh

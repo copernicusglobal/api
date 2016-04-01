@@ -1,1 +1,76 @@
 #! /bin/bash
+
+APP_ID_DEMO='testapp'
+APP_SECRET_DEMO='secret'
+USER_DEMO='79999999999'
+USER_PWD_DEMO='1234'
+
+#
+# Generating a value for Basic Authorization header
+# $1 - APP_ID
+# $2 - APP_SECRET
+#
+function buildBasic() {
+
+   if [ -z $1 ]; then
+	echo "APP_ID not specified"
+	exit 1
+   fi
+   if [ -z $2 ]; then
+        echo "APP_SECRET not specified"
+        exit 1
+   fi
+
+   unamestr=`uname`
+
+   unset BASIC
+
+   if [[ "$unamestr" == 'Linux' ]]; then
+      BASIC=`echo -n "$1:$2" | base64 -w 0`
+   else
+      BASIC=`echo "$1:$2\c" | base64`
+   fi
+}
+
+#
+# This function obtains a test access token using the demo credentials
+#
+function getTestToken() {
+
+   # Step 1. Generating the BASIC authentication header ( base64(app_id:app_secret) )
+   APP_ID="$APP_ID_DEMO"
+   APP_SECRET="$APP_SECRET_DEMO"
+
+   buildBasic $APP_ID $APP_SECRET
+
+   unset TOKEN
+   rs=`curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -H "Authorization: Basic $BASIC" -d "grant_type=password&username=$USER_DEMO&password=$USER_PWD_DEMO&scope=full" https://testapi.copernicusgold.com/auth/oauth/token`
+
+   TOKEN=$(echo $rs | jq .access_token | trim)
+   echo "Obtained a token: $TOKEN"
+}
+
+# Removes both quotes
+function trim() {
+    cat <<< `cat | sed -e 's/^"//' -e 's/"$//' -e 's/^\n//g'`
+}
+
+#
+# Switching to a sample corporate entity
+#
+function switchToCorporate() {
+
+    if [ -z $TOKEN ]; then
+        echo "A token not found"
+        exit 1
+    fi
+
+    # First of all, obtaining the whole list of available clients
+    rs=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/customers`
+
+    # We have a demo corporate entity with the name 'The good company'
+    ID=$(echo $rs | jq '.[] | select(.name == "The good company") | .id')
+
+    # Setting the current customer as the company The good company'
+    rs=`curl -s -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/customers/$ID/current`
+}

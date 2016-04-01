@@ -4,7 +4,7 @@
 # General Information
 
 Here we provide the information about Application Programming Interface (API) 
-for Copernicus Gold services which enables you to register users, to open accounts, to replenish
+for Copernicus Gold services which enables you to create applications, to register users, to open accounts, to replenish
 them and, of course, to send money to other people, organizations, etc.
 
 We use the OAuth2 authentication scheme that means you need an access token to deal

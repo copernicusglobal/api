@@ -8,7 +8,9 @@ source ./tests/functions
 testOTP() {
 
    # Using the DEMO login to see an example of response
-   rs=`curl -s -X PUT -d '{"login":"79999999999"}'  https://testapi.copernicusgold.com/api/v1/otp`
+   rs=`curl -s -X PUT -d '{"login":"'$USER_DEMO'"}'  https://testapi.copernicusgold.com/api/v1/otp`
+
+   echo $rs | jq
 
    assertEquals 'The result is not OK' 0 $(echo $rs | jq .code)
    assertEquals 'The user is Active' '"Active"' $(echo $rs | jq .state)
@@ -19,21 +21,13 @@ testOTP() {
 #
 testAuthentication() {
 
-   # Application credentials. In this case - a sample application
-   APP_ID='testapp'
-   APP_SECRET='secret'
-
    # Step 1. Generating the BASIC authentication header ( base64(app_id:app_secret) )
-   unamestr=`uname`
-
-   if [[ "$unamestr" == 'Linux' ]]; then
-      BASIC=`echo -n "$APP_ID:$APP_SECRET" | base64`
-   else 
-      BASIC=`echo "$APP_ID:$APP_SECRET\c" | base64`
-   fi
+   # @see "functions" for details
+   
+   buildBasic $APP_ID_DEMO $APP_SECRET_DEMO
 
    # Step 2. Using the demo account credentials to obtain a token
-   rs=`curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -H "Authorization: Basic $BASIC" -d "grant_type=password&username=79999999999&password=1234&scope=full" https://testapi.copernicusgold.com/auth/oauth/token`
+   rs=`curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -H "Authorization: Basic $BASIC" -d "grant_type=password&username=$USER_DEMO&password=$USER_PWD_DEMO&scope=full" https://testapi.copernicusgold.com/auth/oauth/token`
 
    # Returned something like:
 
