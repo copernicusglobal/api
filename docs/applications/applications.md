@@ -3,7 +3,7 @@
 Applications are a way to build your own services using the system and its opportunities to store and to carry out
 financial transactions using different assets including those you have created for your own goals.
 
-1. [Creating a new application](#Creating New Application)
+1. [Creating a new application](#creating-new-application)
 
 
 # Creating New Application
