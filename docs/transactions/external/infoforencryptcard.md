@@ -1,13 +1,11 @@
-# Get info for encrypt card data
-Public key and current server time needs for encrypt card data on client [see encrypt card data](./encryptcarddata.md)
+# Data for Encryption of Cards
+
+The server's public key and current server time are required to encrypt card data on client side.
 
 ### REQUEST:
-
        GET     api/v1/cards/encrypt/info
-
 ### ARGUMENTS:
        none
-
 ### EXAMPLE:
 
 ```bash
@@ -24,3 +22,5 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
     "time":"2016-02-18T06:34:31.932+0000"
 }
 ```
+
+The obtained values 'key' and 'time' should be used in [encrypting card data](./encryptcarddata.md).

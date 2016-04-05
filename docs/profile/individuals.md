@@ -1,4 +1,4 @@
-# Individual Profile Model
+# Individual Customer Model
 
 Considering the structure of a customer profile model in case of a person (individual).
 
@@ -39,10 +39,8 @@ Considering the structure of a customer profile model in case of a person (indiv
 ```
 
 Details of the model are clear due to their names. There are the part for a customer's address and nationality 
-(citizenship), then the parts of names (the first, middle, last or full name) and the part connected with customer
+(citizenship), then the parts for names (the first, middle, last or the full name) and the part connected with customer
 documents (a document type and number). 
 
 Some of the values should be obtained via special reference like 'countries', 'sex' and 'document types' 
-(see below the endpoints for them).
-
-
+(see [special endpoint for them](./profile_directories.md)).

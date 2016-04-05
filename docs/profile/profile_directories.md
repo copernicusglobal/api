@@ -3,14 +3,11 @@
 Returns a full list of the world countries. The result contains a big list of all countries where the system currently operates.
 
 ### REQUEST:
-
        GET   /api/v1/countries
-
 ### ARGUMENTS:
-
        none
-
 ### EXAMPLES:
+
 ```bash
 TOKEN="your access token here"
 curl -X GET -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/countries
@@ -32,7 +29,7 @@ curl -X GET -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com
 ```
 
 The resulted list is big enough and can be successfully cached in a local application. The value attribute of country
-record is ISO 3166-1 A2 code (two-letter).
+record is the ISO 3166-1 A2 code (two-letter).
 
 # Document Types
 
@@ -40,19 +37,15 @@ Returns a list of available document types. The result contains a list with all 
 to register and open an account in the system.
 
 ### REQUEST:
-
        GET   /api/v1/documents/types
-       
 ### ARGUMENTS:
        none
-
 ### EXAMPLES
 
 ```bash
 TOKEN="your access token here"
 curl -X GET  -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/documents/types
 ```
- 
 
 ### RESPONSE:
 

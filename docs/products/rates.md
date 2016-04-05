@@ -1,9 +1,9 @@
 # Exchange Rates
 
-Returns calculates sums for the current exchange rate.
+Returns calculates sums for the current exchange rates.
 
-Provides an exchange rate, converted amounts for some parameters of exchange deal. In the body of the request you should
-provide the currency code (assets' identifier) both source and target currencies ("source\_code" and "target\_code" fields)
+Provides the exchange rate, converted amounts for some parameters of the exchange deal. In the body of the request you should
+provide a currency code (the asset's identifier) both source and target currencies ("source\_code" and "target\_code" fields)
 and some amount to convert. 
 
 The value can be specified in source or target currency ("source\_value" or "target\_value"). The product value may depend
@@ -17,7 +17,8 @@ use product = "Default".
 
 ```bash
 TOKEN="your access token here"
-curl -X PUT -H "Authorization: Bearer $TOKEN" -d '{"source_code":"XAU", "target_code":"USD", "source_value":"1.00000", "product":"Default"}' https://testapi.copernicusgold.com/api/v1/rates
+MODEL='{"source_code":"XAU", "target_code":"USD", "source_value":"1.00000", "product":"Default"}'
+curl -X PUT -H "Authorization: Bearer $TOKEN" -d $MODEL https://testapi.copernicusgold.com/api/v1/rates
 ```
  
 ### RESPONSE:
@@ -31,11 +32,10 @@ curl -X PUT -H "Authorization: Bearer $TOKEN" -d '{"source_code":"XAU", "target_
     "target_code": "USD",
     "target_value": 31.96
 }
-````
+```
 
 The result contains mostly the same fields and also the field missed in the request ("source_value" or "target_value" which
 will have the converted value).
 
 Depending on the exchange rate the original target or source value can be also recomputed to ensure the correct rounding,
 i.e. you can't buy less than, for instance, 0.01 USD or less than 0.00001 grams of gold (XAU) - it always will be rounded.
- 

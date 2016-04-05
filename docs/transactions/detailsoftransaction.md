@@ -1,5 +1,5 @@
-# Details of transaction
-Detailed information about a transaction
+# Details of Transaction
+
 Returns a list of fields for a certain transaction.
 
 ### REQUEST:
@@ -7,6 +7,7 @@ Returns a list of fields for a certain transaction.
 ### ARGUMENTS:
        id - the identifier of the transaction
 ### EXAMPLE:
+
 ```bash
 TOKEN="your access token here"
 curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/transactions/4851
@@ -24,7 +25,7 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
                    "id":4750,
                    "type":"Common"
                 },
-     "contact":"7 912 2437136", 
+     "contact":"79122437136", 
      "contact_type":"Phone",
      "state":"Cancelled", 
      "direction":0,
@@ -33,4 +34,6 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
   }
 ]
 ```
-The fields in the provided transaction model are the same as for lists of transactions (see above).
+
+The fields in the provided transaction model are the same as for lists of transactions,
+([see completed transactions](./completedtransactions.md)).

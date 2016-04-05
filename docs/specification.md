@@ -33,8 +33,11 @@ All successful API responses contain the code 0 (means "success").
 1. [Creating Own Applications](./applications/applications.md)
   1. [Setting Own Fees](./applications/fees.md)
 2. [User's Permissions](./roles.md)
-3. [Copernicus Products](./products/products.md)
+3. [Customers](./customers.md)
+4. [Customer Profiles](./profile/profiles.md)
+5. [Products](./products/products.md)
   1. [Accounts](./products/accounts.md)
   2. [Currency/Asset Exchange](./products/assets.md)
   3. [Exchange Transaction](./products/exchangetransaction.md)
-4. [Customer Profiles](./profile/profiles.md)
+6. [Messages](./messages.md)
+

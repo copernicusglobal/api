@@ -1,25 +1,29 @@
-# Creation of new transaction
-Creates a new transaction
-Creates a new transaction from JSON model of its fields. The current implementation uses the common account type as a source account for this transaction. Make sure that you specified the Content-Type header as "application/json".
+# Creating a New Transaction
+
+Creates a new transaction by the specified model.
 
 ### REQUEST:
        POST     /api/v1/transactions
 ### ARGUMENTS:
-       request body - { "amount" : "...", "details" : "...", "contact_type" : "...", "contact" : "..." }
+```
+   The request body - { "amount" : "...", "details" : "...", "contact_type" : "...", "contact" : "...", "account" : "..." }
+```
 ### EXAMPLE:
+
 ```bash
 TOKEN="your access token here"
-curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d '{"amount":"5.003","details":"Invoce # 2433","contact_type" : "Phone","contact":"79122437136"}' https://testapi.copernicusgold.com/api/v1/transactions
+MODEL='{"amount":"5.003","details":"Invoce # 2433","contact_type" : "Phone","contact":"79122437136"}, "account": {"id": 4750}'
+curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d $MODEL https://testapi.copernicusgold.com/api/v1/transactions
 ```
 
 ### RESPONSE:
 ```javascript
 {
   "created":"2015-05-13T12:19:17.512+0000",
-  "id":4851, 
+  "id":4851,
   "details":"Invoce # 2433",
   "amount": 5.003,
-  "account": { 
+  "account": {
               "description":"Current",
               "id":4750,
               "type":"Common"
@@ -30,4 +34,6 @@ curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -
   "direction":0
 }
 ```
-The fields in the provided transaction model are the same as for lists of transactions (see above).
+
+The fields in the provided transaction model are the same as for lists of transactions,
+([see completed transactions](./completedtransactions.md)).

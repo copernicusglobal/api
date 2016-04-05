@@ -1,14 +1,15 @@
 # Cards
 
-Returns a list of cards with their information.
+If you use a card to replenish the balance of an account, the information about the card is saved in the secured
+storage which is provided by our partner. After storing, a card can be just used by its identifier to avoid
+providing the whole information about the card again.
+
+There is a way to obtain all previously stored cards.
 
 ### REQUEST:
-
        GET     /api/v1/cards
-
 ### ARGUMENTS:
        none
-
 ### EXAMPLES:
 
 ```bash
@@ -41,3 +42,6 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
     }
 ]
 ```
+
+This data can be used to create transaction - see, for example, 
+[filling an account from a card](../transactions/external/externaltransactionfromcard.md)

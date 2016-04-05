@@ -1,15 +1,26 @@
 # Validating a transaction
-Changes the transaction's state to 'Validate'
-This method allows to change the transaction's state (if it is in **Draft** or **New** state). This state transitions is allowed for '**New**' and '**Draft**' states only. For other states an error will be generated (like  {"code" : "-1", "message" : "Transaction state is invalid"}).
+
+Changes the transaction's state to the 'Validate' one and performs checking the fields of the transaction according to
+its type.
+
+This method allows to change the transaction's state, if it is in the **Draft** state.
+For other states an error will be generated ("Transaction state is invalid").
+
 ### REQUEST:
        PUT     /api/v1/transactions/:id/validate
 ### ARGUMENTS:
        id - is an obligate field passed as a part of the url.
+```
+       The request body: {"id": ..., ... } 
+```
 ### EXAMPLE:
+
 ```bash
 TOKEN="your access token here"
+MODEL='{"id" : 4350, ... }
 curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/transactions/4350/validate
 ```
+
 ### RESPONSE:
 ```javascript
 {
@@ -30,4 +41,5 @@ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H
   "modified": "2015-05-13T14:36:53.280+0000"
 }
 ```
+
 All the fields are the same as for others transaction requests.

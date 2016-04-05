@@ -1,23 +1,25 @@
-# Completed transactions
+# List of Completed Transactions
 
-List of transactions
-Returns a list of transactions available for the current customer.
+Returns a list of completed transactions available for the current customer.
 
 ### REQUEST:
        GET     /api/v1/transactions
-
 ### ARGUMENTS:
-       Additional request parameters can be used for filtering and paging the transactions in the list.
+       
+       Additional request parameters can be used for paging transactions in the list:
+       
        page - number of current page
-       per_page - number of item in the page
+       per_page - number of items in the page
 
 ### EXAMPLE:
+
 ```bash
 TOKEN="your access token here"
 curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/transactions?page=0&per_page=5
 ```
 
 ### RESPONSE:
+
 ```javascript
 [
   {  "created":"2015-05-13T12:19:17.512+0000",
@@ -55,11 +57,12 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
 ```
 
 It's a list of transaction models each contains a set of fields. The transaction models fields:
-- **id** - identifier of a transaction
+
+- **id** - the unique identifier of a transaction
 - **created** - exact time of creation of the transaction and **modified** - the time of latest modifications
-- **details** - information about this money transfer
+- **details** - information about this money transfer (like 'the payment purpose')
 - **amount** - amount of money to be sent or received
 - **account** - details of own account used in the transaction
 - **contact** - an address where you send or from where receive the money, **contact_type** - type of the address (Phone, Email)
-- **state** - a status of the transaction (**Completed, Cancelled**) and **state_changed** - the time when the currenct state was set
-- **direction** - a direction of money sending (0 - for outgoing transactions, 1 - for incoming ones)
+- **state** - a status of the transaction (**Completed, Cancelled**) and **state_changed** - the time when the current state was set
+- **direction** - a direction of money sending (0 - for the outgoing transactions, 1 - for the incoming)

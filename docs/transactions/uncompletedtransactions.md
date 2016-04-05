@@ -1,24 +1,25 @@
-# Uncompleted transactions
+# Unconfirmed transactions
 
-List of uncompleted transactions
-Returns a list of transactions which are not completed or not sent by user
+Returns a list of transactions which are not completed or not sent by user, for example, drafts.
 
 ### REQUEST:
-
        GET     /api/v1/transactions/notcompleted
-       
 ### ARGUMENTS:
-       Additional request parameters can be used for filtering and paging the transactions in the list.
-       page - number of current page
-       per_page - number of item in the page
+
+       Additional request parameters can be used for paging transactions in the list.
+
+       page - number of the current page
+       per_page - number of items in the page
 
 ### EXAMPLE:
+
 ```bash
 TOKEN="your access token here"
 curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/transactions/notcompleted?page=0&per_page=5
 ```
 
 ### RESPONSE:
+
 ```javascript
 [
   {  "created":"2015-05-13T12:19:17.512+0000",
@@ -38,4 +39,8 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
 ]
 ```
 
-The fields in the provided transaction model are the same as for list of confirmed transactions but with small difference: the direction field is always 0 (because we deal with outgoing transactions only) and the state field can be **New**, **Draft**, **Validate**, **Unconfirmed** and **Confirmed**.
+The fields in the provided transaction model are the same as for list of [confirmed transactions](./completedtransactions.md)
+but with a small difference: the direction field is always 0 (because we deal with outgoing transactions only) and
+the state field can be **New**, **Draft**, **Validate**, **Unconfirmed** only.
+
+The latter is the state when the corresponding transaction is attempted to be confirmed by a user.
