@@ -2,7 +2,7 @@
 
 Considering the structure of a customer profile model in case of a person (individual).
 
-```javascript
+```
 {
     "birth_date": "1978-11-14",
     "code": 0,

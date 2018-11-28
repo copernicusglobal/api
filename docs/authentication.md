@@ -93,6 +93,8 @@ The last example will return something like 'ROLE\_USER'. But if the user didn't
 by entering the PIN code in the USSD menu, this 'roles' query would return a role like 'ROLE\_EXPECT_PASSWORD' instead of 'ROLE\_USER'.
 Also without entering the PIN code all the API functions return the **403 Forbidden Error** because the authentication 
 has not been completed yet.
+
+*In all examples here in the documentation we will denote a token as the $TOKEN variable.*
  
 # Mobile Applications - the specific logins
 

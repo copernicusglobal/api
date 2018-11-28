@@ -1,16 +1,17 @@
 # Application Concept
 
 Applications are a way to build your own services using Copernicus Gold and its abilities to store and to carry out
-financial transactions using different assets including those you create for your own aims.
+financial transactions using different electronic assets including those you create for your own aims.
 
 1. [Creating a new application](#creating-new-application)
 2. [Removing an Application](#removing-application)
-3. [Editing an Application](#editing-application)
-4. [Receiving Application Details](#getting-application-details)
-5. [Getting All Applications](#getting-all-applications)
+3. [Modifying an Application](#modifying-application)
+4. [Obtaining Application Details](#obtaining-application-details)
+5. [Obtaining All Applications](#obtaining-all-applications)
+6. [Obtaining the Application of a Provider](#obtaining-by-provider)
 
 
-You can see some examples for these operations: [application_test](../../tests/applications_test.sh) 
+You can see some examples for these operations: [application_test](../../tests/applications_test.sh).
 
 
 # Creating New Application
@@ -20,22 +21,31 @@ used in the OAUTH2 [authentication procedure](../authentication.md).
 
 **To perform the creation you need to be logged in as a corporate customer.** 
 
+
 ### REQUEST:
-    POST /api/v1/applications
+
+```
+POST /api/v1/applications 
+```
+
 ### ARGUMENTS:
 
 ```
-    The model: {"redirects" : ["http://localhost:8080", "https://www.com"] }
+   {"redirects" : ["http://localhost:8080/login"], "provider": {"id": 1234567} }
 ```
-    The 'redirects' array must be filled with urls in the case when you use the web authorization flow and you need to
-    provide a callback url to make a redirection from the authorization server back to your application. 
+    (optional) The 'redirects' array must be filled with an url in the case when you use the web authorization flow and you need to
+    provide a callback url to make a redirection from the authorization server back to your application.
+    
+    (optional) The 'provider' is a reference to [the provider object](../models/provider.md). This field is used
+    when you need to link the application to the same provider as some other application has. If the applications
+    have the same provider, they may have same settings like fees. 
 
 ### EXAMPLE
 
 ```bash
-TOKEN="put your access token is here"
-MODEL='{"redirects" : ["http://localhost:8080", "https://www.com" ] }'
-curl -X POST -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/applications -d $MODEL
+MODEL='{"redirects" : ["http://localhost:8080"] }'
+
+curl -X POST -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/applications -d $MODEL
 ```
 
 ### RESPONSE:
@@ -47,20 +57,24 @@ curl -X POST -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.co
     "app_id":"3a16d63129c94e7d93b0d0bb6a898691",
     "app_secret":"18fa73f6ab8c45779c1c66de6a6ede1d",
     "grant_types":["authorization_code","password","refresh_token"],
-    "redirects":["http://localhost:8080", "https://www.com"]
+    "redirects":["http://localhost:8080"]
   }
 ```
 
 Now, you can provide for your clients the ability to login via your own application using the given app\_id and app\_secret.
 See, for example, [this test](../../tests/applications_test.sh)
 
+Additional information on the application object can be found [here](../models/application.md)
+
 
 # Removing Application
 
-Performs removing the specified application.
+Removes the specified application.
 
 ### REQUEST:
+```
     DELETE /api/v1/applications/:app_id
+```
 ### ARGUMENTS:
 
     app_id - the identifier of the application to be removed
@@ -68,9 +82,9 @@ Performs removing the specified application.
 ### EXAMPLE
 
 ```bash
-TOKEN="put your access token is here"
-APP_ID=<..identifier..>
-curl -X DELETE -H 'Accept: application/json' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/applications/$APP_ID
+APP_ID='3a16d63129c94e7d93b0d0bb6a898691'
+
+curl -X DELETE -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/applications/$APP_ID
 ```
 
 ### RESPONSE:
@@ -81,37 +95,40 @@ curl -X DELETE -H 'Accept: application/json' -H 'Content-Type: application/json'
     "created":"2016-04-03T14:06:58.620+0000",
     "app_id":"3a16d63129c94e7d93b0d0bb6a898691",
     "grant_types":["authorization_code","password","refresh_token"],
-    "redirects":["http://localhost:8080", "https://www.com"]
+    "redirects":["http://localhost:8080"]
   }
 ```
 
 In the response you can see the model of the application being removed.
 
-# Editing Application
+
+# Modifying Applications
 
 You can also modify application's attributes using PUT requests with the same model as for
-POST requests. The only difference is when you provide an app_secret value in the model you can
+POST requests. The only difference is when you provide an app\_secret value in the model you can
 change the application's password.
 
 ### REQUEST:
+```
     PUT /api/v1/applications
+```    
 ### ARGUMENTS:
 
 ```
-    The model: { "redirects" : ["http://localhost:8080", "https://www.com"],
-                 "app_secret" : "....." }
+    The model: { "redirects" : ["http://localhost:8080"],
+                 "app_secret" : "..." }
 ```
-    The 'redirects' array must be filled with urls in the case when you use the web authorization flow and need to
+    (optional) The 'redirects' array must be filled with an url in the case when you use the web authorization flow and need to
     provide a callback url to make a redirection from the authorization server back to your application.
     
-    The 'app_secret' is a new password for the application. 
+    (optional) The 'app_secret' is a new password for the application. 
 
 ### EXAMPLE
 
 ```bash
-TOKEN="put your access token is here"
 MODEL='{"redirects" : ["http://localhost:8080", "https://www.com" ], "app_secret": "xxx" }'
-curl -X PUT -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/applications -d $MODEL
+
+curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/applications -d $MODEL
 ```
 
 ### RESPONSE:
@@ -126,12 +143,16 @@ curl -X PUT -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com
   }
 ```
 
-# Receiving Application Details
+As you can mention there is no app\_secret field in the response.
 
-Returns information about a concrete application by its identifier.
+# Obtaining Application Details
+
+Returns the information about a concrete application by its identifier.
 
 ### REQUEST:
+```
     GET /api/v1/applications/:app_id
+```
 ### ARGUMENTS:
 
     app_id - the identifier of the application
@@ -139,9 +160,10 @@ Returns information about a concrete application by its identifier.
 ### EXAMPLE
 
 ```bash
-TOKEN="put your access token is here"
-APP_ID=<..identifier..>
-curl -X GET -H 'Accept: application/json' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/applications/$APP_ID
+APP_ID='3a16d63129c94e7d93b0d0bb6a898691'
+curl -X GET -H 'Accept: application/json'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/applications/$APP_ID
 ```
 
 ### RESPONSE:
@@ -156,22 +178,24 @@ curl -X GET -H 'Accept: application/json' -H 'Content-Type: application/json' -H
   }
 ```
 
-In the response you can see the model of the application.
+In the response you can see the [model of the application](../models/application.md).
 
 
-# Getting All Applications
+# Obtaining All Applications
 
 Returns a list of all applications available for the current customer who must be a corporate entity.
 
 ### REQUEST:
+```
     GET /api/v1/applications
-### ARGUMENTS:
-    none
+```    
+
 ### EXAMPLE
 
 ```bash
-TOKEN="put your access token is here"
-curl -X GET -H 'Accept: application/json' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/applications
+curl -X GET -H 'Accept: application/json'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer $TOKEN" $HOST/api/v1/applications
 ```
 
 ### RESPONSE:
@@ -194,4 +218,45 @@ curl -X GET -H 'Accept: application/json' -H 'Content-Type: application/json' -H
 ]  
 ```
 
-In the response you can see the model of the application.
+# Obtaining by Provider
+
+Returns the list of all applications belonging to a concrete provider. Please refer to
+[the provider object description](../models/provider.md) for more information on providers.
+
+### REQUEST:
+
+```
+    GET /api/v1/applications/:id/provider
+```
+    
+### ARGUMENTS:
+
+    id - the identifier of the provider to use
+
+### EXAMPLE
+
+```bash
+curl -X GET -H 'Accept: application/json'
+            -H 'Content-Type: application/json'
+            -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/applications/1234567/provider
+```
+
+### RESPONSE:
+
+```javascript
+[
+  {
+    "created":"2016-04-03T14:06:58.620+0000",
+    "app_id":"3a16d63129c94e7d93b0d0bb6a898691",
+    "grant_types":["authorization_code","password","refresh_token"],
+    "redirects":["http://localhost:8080", "https://www.com"]
+  },
+  {
+    "created":"2016-04-06T08:16:39.648+0000",
+    "app_id":"e56800d31b294181851e504e4f4e25db",
+    "grant_types":["authorization_code","password","refresh_token"],
+    "redirects":[]
+  },
+  ...
+]  
+```
