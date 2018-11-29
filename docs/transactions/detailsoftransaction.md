@@ -1,23 +1,25 @@
 # Details of Transaction
 
-Returns a list of fields for a certain transaction.
+Returns the details of a certain transaction. 
 
 ### REQUEST:
-       GET     /api/v1/transactions/:id
+```
+    GET     /api/v1/transactions/:id
+```
 ### ARGUMENTS:
        id - the identifier of the transaction
 ### EXAMPLE:
 
 ```bash
-TOKEN="your access token here"
-curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/transactions/4851
+curl -X GET -H "Accept: application/json" \
+            -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/transactions/1234567
 ```
 
 ### RESPONSE:
 ```javascript
 [
   {  "created":"2015-05-13T12:19:17.512+0000",
-     "id":4851, 
+     "id": 1234567, 
      "details":"Invoce # 2332",
      "amount": 5.00000,
      "account": { 
@@ -36,4 +38,4 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
 ```
 
 The fields in the provided transaction model are the same as for lists of transactions,
-([see completed transactions](./completedtransactions.md)).
+([see completed transaction model](../models/transaction.md)).

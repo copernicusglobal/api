@@ -13,24 +13,38 @@ the modification will result an error ("Transaction state is invalid").
        PUT     /api/v1/transactions
 ### ARGUMENTS:
 ```
-   The request body - { "id", "...",  "amount" : "...", "details" : "...", 
-                        "contact_type" : "...", "contact" : "...", "account" : {...} }
+{ 
+    "id", "...", 
+    "amount" : "...",
+    "details" : "...",
+    "contact_type" : "...",
+    "contact" : "...",
+    "account" : {...}
+}
 ```
-   id - an obligate field
+
+   id - obligate field
 
 ### EXAMPLE:
 
 ```bash
-TOKEN="your access token here"
-MODEL='{"id" : "3455", "amount":"5.003","details":"Invoce # 2433","contact_type" : "Phone","contact":"79122437136"}'
-curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d $MODEL https://testapi.copernicusgold.com/api/v1/transactions
+MODEL='{
+         "id" : "1234567", \
+         "amount":"5.003",\
+         "details":"Invoce # 2433",\
+         "contact_type" : "Phone",\
+         "contact":"79122437136"
+       }'
+curl -X PUT -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $TOKEN" -d $MODEL $API_HOST/api/v1/transactions
 ```
 
 ### RESPONSE:
 ```javascript
 {
   "created":"2015-05-13T12:19:17.512+0000",
-  "id":4851, 
+  "id":1234567, 
   "details":"Invoce # 2433",
   "amount": 5.003,
   "account": { 
@@ -47,6 +61,6 @@ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H
 ```
 
 The fields in the provided transaction model are the same as for lists of transactions,
-([see completed transactions](./completedtransactions.md)).
+([see transaction models](../models/transaction.md)).
  
 Each modification sets the current state of a transaction to '**Draft**'.

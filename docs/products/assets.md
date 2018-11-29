@@ -9,5 +9,17 @@ to perform exchange operations. For creation of own asset please refer to [the a
 
 Here we consider functions connected with conversions of assets (currencies):
 
-1. [Exchange Rates](./rates.md)
-2. [Creating Exchange Transaction](./exchangetransaction.md)
+1. [Get Available Assets/Currencies](#get-available-assets)
+2. [Exchange Rates](./rates.md)
+3. [Creating Exchange Transaction](./exchangetransaction.md)
+
+
+## Get Available Assets
+
+The endpoint to receive a list of the available assets:
+
+```
+    curl -X GET -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/currencies
+```
+
+The result will be a [list of assets](../models/asset.md).

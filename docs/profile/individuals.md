@@ -1,46 +1,97 @@
 # Individual Customer Model
 
-Considering the structure of a customer profile model in case of a person (individual).
+The full structure of models used for individuals [is provided here](../models/individual.md).
+Below we consider typical operations that can be done for individuals.
 
+Basically, all operations can be divided onto two pieces: setting data for the basic customer profile
+and submitting data for the KYC procedure.
+
+The customer is not allowed to modify their profile after starting the KYC procedure because in this case
+all their data are considered as verified.
+
+
+## Retrieving Customer Profile
+
+This function returns the data model for the current authorized customer who must be an individual person (not a 
+corporate entity).
+
+### REQUEST:
 ```
+    GET /api/v1/customers/individual/data
+```
+### ARGUMENTS:
+       none
+### EXAMPLE
+
+```bash
+curl -X GET -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/customers/individual/data
+```
+ 
+### RESPONSE:
+
+```javascript
 {
-    "birth_date": "1978-11-14",
     "code": 0,
-    "current_address": {
-        "address": "3-400 Himikov str",
-        "city": "Yekaterinburg",
-        "country": {
-            "description": "Russia",
-            "value": "RU"
-        },
-        "postal_code": "620000",
-        "type": "Legal"
-    },
-    "document_number": "6500 123456",
-    "document_type": {
-        "description": "Passport",
-        "value": "Passport"
-    },
     "first_name": "Alexey",
     "full_name": "Romanchuk Alexey Petrovich",
-    "id": 652450,
-    "state":"Active",
-    "last_name": "Romanchuk",
-    "middle_name": "Petrovich",
-    "nationality": {
-        "description": "Russia",
-        "value": "RU"
-    },
-    "sex": {
-        "description": "Male",
-        "value": "Male"
-    }
+    "id": 1234567,
+    ...
 }
 ```
 
-Details of the model are clear due to their names. There are the part for a customer's address and nationality 
-(citizenship), then the parts for names (the first, middle, last or the full name) and the part connected with customer
-documents (a document type and number). 
+The result is a customer model. The identifier ("id") must be used to edit the profile (see the PUT command below).
+The whole list of fields can be obtained [here](../models/individual.md) 
 
-Some of the values should be obtained via special reference like 'countries', 'sex' and 'document types' 
-(see [special endpoint for them](./profile_directories.md)).
+
+## Modifying Customer Profile
+
+This operation updates profile data based on the model specified in the request's body. 
+
+## REQUEST:
+```
+    PUT /api/v1/customers/individual/data
+```    
+### ARGUMENTS:
+      none
+### EXAMPLE
+
+```bash
+MODEL='{"id" : 1234567,  "birth_date" : "1978-11-14T00:00:00"}'
+
+curl -X POST -H "Authorization: Bearer $TOKEN" -d $MODEL $API_HOST/api/v1/customers/individual/data
+```
+
+### RESPONSE:
+
+```javascript
+ {
+    "code"   : 0,
+    "birth_date": "1978-11-14",
+    "id": 1234567,
+    ..
+ }
+```
+
+In the response is the individual model.
+
+## Submitting Data for KYC procedure (identification)
+
+Before submitting the form to the KYC procedure, you need to prepare all necessary data for
+[the individual model](../models/individual.md) (see the part connected with the identification).
+
+The first endpoint is used just for saving data WITHOUT submitting them to the compliance service. Please
+use this endpoint for store portions of data.
+
+```
+    curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/identification/individuals/:id/save
+```
+
+Then, after storing all data you can submit the individual form.
+
+```
+    curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/identification/individuals/:id
+```
+
+After that, the compliance status for the customer will be changed to 'Accepted' and then to 'Pending'.
+(please [see the link for more details](../models/customer.md).
+

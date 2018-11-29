@@ -29,7 +29,7 @@ You need:
 
 ### Querying an OTP
 ```bash
-curl -X PUT -d '{"login":"..phone number.."}'  https://testapi.copernicusgold.com/api/v1/otp
+curl -X PUT -d '{"login":"..phone number.."}'  $API_HOST/api/v1/otp
 ```
 
 The generated password will be sent to the specified mobile phone number as a USSD message. After receiving the code it can be used
@@ -40,7 +40,9 @@ to obtain an access token from the authorization server. You need the following 
 BASIC=base64("app_id:app_secret")
 PHONE="...mobile phone number..."
 OTP_CODE="... otp code from above ..."
-curl -X POST -H "Authorization: Basic $BASIC" -d "grant_type=password&username=$PHONE&password=$OTP_CODE&scope=full" https://testapi.copernicusgold.com/auth/oauth/token
+curl -X POST -H "Authorization: Basic $BASIC" \
+             -d "grant_type=password&username=$PHONE&password=$OTP_CODE&scope=full" \
+             $API_HOST/auth/oauth/token
 ```
 
 Here the 'username' is a user's mobile phone number and the 'password is a one-time password sent to you above. 
@@ -66,7 +68,8 @@ Use the following query to get a new access token by the refresh\_token:
 REFRESH=c01b926a-cf78-4b43-be92-5fe21ef712d0
 APP_ID=<..your app id..>
 APP_SECRET=<..your app secret..>
-curl -X POST -d "grant_type=refresh_token&client_id=$APP_ID&client_secret=$APP_SECRET&refresh_token=$REFRESH" https://testapi.copernicusgold.com/auth/oauth/token
+curl -X POST -d "grant_type=refresh_token&client_id=$APP_ID&client_secret=$APP_SECRET&refresh_token=$REFRESH" \
+             $API_HOST/auth/oauth/token
 ```
 
 The result will be the same as above in the case of receiving the first access token. For more details and examples please take a look
@@ -86,7 +89,7 @@ Once you have received an access token you can invoke an API operation as http q
 For example:
 ```bash
 TOKEN=06935b2e-6639-4b49-8c8a-71452082a420
-curl -X GET -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/users/roles
+curl -X GET -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/users/roles
 ```
 
 The last example will return something like 'ROLE\_USER'. But if the user didn't complete the authentication process 
@@ -105,10 +108,11 @@ a special login linked to the device identifier which is used later during the a
 At the first step we generate a login:
 
 ```bash
-curl -X POST -H "Authorization: Bearer $TOKEN"  -d '{"device_id" : "1234567890"}' https://testapi.copernicusgold.com/api/v1/logins
+curl -X POST -H "Authorization: Bearer $TOKEN"  \
+             -d '{"device_id" : "1234567890"}' $API_HOST/api/v1/logins
 ```
 
-The result with the tokens
+The result with the token:
 ```javascript
 {"code" : 0, "login":"M06935b2e-6639-4b49-8c8a-71452082a420"}
 ```
@@ -118,7 +122,10 @@ the user's PIN code. Use the following request to get an access token via the ob
 
 ```bash
 BASIC=base64("client_id:client_secret")
-curl -X POST -H "X-Device-Id: 1234567890" -H "Authorization: Basic $BASIC" -d "grant_type=password&username=M06935b2e-6639-4b49-8c8a-71452082a420&password=PIN&scope=full" https://testapi.copernicusgold.com/auth/oauth/token
+curl -X POST -H "X-Device-Id: 1234567890" \
+             -H "Authorization: Basic $BASIC" \
+             -d "grant_type=password&username=M06935b2e-6639-4b49-8c8a-71452082a420&password=PIN&scope=full" \
+             $API_HOST/auth/oauth/token
 ```
 
 Take a look at usage of the "x-device-id" header. Without this identifier which was used to generate the login

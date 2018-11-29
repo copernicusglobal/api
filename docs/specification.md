@@ -12,8 +12,7 @@ In accordance with the [OAuth 2 specification](https://tools.ietf.org/html/rfc67
 Here is an example for it:
 
 ```bash
-TOKEN="your access token here"
-curl -X GET -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/users/roles
+curl -X GET -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/users/roles
 ```
 
 ## Error Processing

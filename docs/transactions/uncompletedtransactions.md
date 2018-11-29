@@ -3,7 +3,9 @@
 Returns a list of transactions which are not completed or not sent by user, for example, drafts.
 
 ### REQUEST:
-       GET     /api/v1/transactions/notcompleted
+```
+    GET /api/v1/transactions/notcompleted
+```
 ### ARGUMENTS:
 
        Additional request parameters can be used for paging transactions in the list.
@@ -14,8 +16,8 @@ Returns a list of transactions which are not completed or not sent by user, for 
 ### EXAMPLE:
 
 ```bash
-TOKEN="your access token here"
-curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" https://testapi.copernicusgold.com/api/v1/transactions/notcompleted?page=0&per_page=5
+curl -X GET -H "Accept: application/json" \
+            -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/transactions/notcompleted?page=0&per_page=5
 ```
 
 ### RESPONSE:
@@ -23,7 +25,7 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
 ```javascript
 [
   {  "created":"2015-05-13T12:19:17.512+0000",
-     "id":12301, 
+     "id": 1234567, 
      "details":"Invoce # 2332",
      "amount": 5.00000,
      "account": { 
@@ -35,12 +37,12 @@ curl -X GET -H "Accept: application/json" -H "Authorization: Bearer $TOKEN" http
      "contact_type":"Phone",
      "state":"Cancelled", 
      "direction":0
-  }
+  },
+  ...
 ]
 ```
 
 The fields in the provided transaction model are the same as for list of [confirmed transactions](./completedtransactions.md)
-but with a small difference: the direction field is always 0 (because we deal with outgoing transactions only) and
-the state field can be **New**, **Draft**, **Validate**, **Unconfirmed** only.
+but with a small difference: the state field can be **New**, **Draft**, **Validate**, **Unconfirmed** only.
 
 The latter is the state when the corresponding transaction is attempted to be confirmed by a user.

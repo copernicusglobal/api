@@ -4,6 +4,8 @@ This model is used for description of individual people.
 
 ```
 {
+     ... This part is used for setting the basic customer profile
+     
     "birth_date": "1978-11-14T00:00:00.000+0000",
     "fatca": true,
     "first_name": "Alexey",
@@ -14,6 +16,9 @@ This model is used for description of individual people.
     "nationality": {...},
     "pep": true,
     "sex": {...},
+    
+    ... The part below - for the identification (KYC) procedure
+    
     "current_address": { ... },
     "document_number": "6501 555555",
     "document_type": {...},

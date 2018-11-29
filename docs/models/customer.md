@@ -27,6 +27,12 @@ The state of the customer. The possible values are:
 * "Confirmed" - at least one of the customer's contact (mobile phone or email) was confirmed.
 * "Active" - the customer has fulfilled their profile.
 
+Immediately after registration a customer has the "New" state, then after confirming their mobile phone number via USSD,
+the state is changed to "Confirmed". But after providing the whole and the valid information in the [profile](../profile/profiles.md)
+the state is transformed to the "Active". 
+
+The customers who have states less then "Active" cannot sign any documents or payments.
+
 ### name
 
 The full name of the customer.

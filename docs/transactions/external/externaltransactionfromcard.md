@@ -1,49 +1,69 @@
-# Receiving money from a bank card
+# Receiving Funds from a Bank Card
 
 The key attributes for this type of transaction are "transaction\_type", "direction" and "external_channel".
 The "transaction\_type" must be specified as "External", the "external\_channel" field must be equal to "Card" 
-and the "direction" should be equal to "1" (i.e. incoming).
+and the "direction" should be equal to "1" (i.e. an incoming transaction).
 
 In the case when the "related\_currency" and account's currency are not equal - the currency exchange should be used.
 
 First of all, [see the currencies](./currenciesfortransaction.md) to obtain the list of available currencies for the
-operation. Then, use [the "/api/v1/rates"](../../products/rates.md) to get current exchange rates and the technique from 
+operation. This currency value must be put in the 'related\_currency' field below.
+
+Then, use [the "/api/v1/rates"](../../products/rates.md) to get current exchange rates and the technique from 
 [here](../../products/exchangetransaction.md) to fill the appropriate fields in the transaction model.
 
-To obtain valid exchange rates you need to specify the value "FromCard" as the "product" field value for the endpoint 
-"/api/v1/rates". This currency value must be put in the 'related\_currency' field below.
-
-Be aware that when creating a new such transaction, we do not send the sensitive card data (the card number and CVC/CVV)
+Be aware that when creating a new transaction, we do not send the sensitive card data (the card number and CVC/CVV)
 to the server. [See below how we deal with that](#validating-card-transaction).
 
 ### REQUEST:
-       POST     /api/v1/transactions
+
+```
+    POST /api/v1/transactions
+```
+    
 ### ARGUMENTS:
 
 ```javascript
-       The model: { "transaction_type" : "External", 
-                    "external_channel" : "Card", 
-                    "direction" : 1, 
-                    "account" : { "id":"..." , ...}, 
-                    "amount" : "...", 
-                    "related_currency" : {"value" : "..."}, 
-                       "card" : { "card_bin": "...",
-                                  "last_four_digits":"...",
-                                  "cardholder_name" : "...",
-                                  "valid_thru" : "..." }
-                   }
+{ 
+    "transaction_type" : "External", 
+    "external_channel" : "Card", 
+    "direction" : 1, 
+    "account" : { "id":"..." , ...}, 
+    "amount" : "...", 
+    "related_currency" : {"value" : "..."}, 
+    "card":
+    { 
+       "card_bin": "...",
+       "last_four_digits":"...",
+       "cardholder_name" : "...",
+       "valid_thru" : "..." 
+    }
+}
 ```
 
 ### EXAMPLE:
 
 ```bash
-TOKEN="your access token here"
-MODEL='{"transaction_type" : "External", "external_channel" : "Card","direction" : 1, "account" : {"id": "650650"}, \
-        "related_currency":{"value" : "EUR"}, "amount" : 100.00, "card" : {"card_bin" : "111111", \
-        "last_four_digits":"1111", "cardholder_name" : "John Smith", "valid_thru" : "09/2018"}  }'
+MODEL=' {
+            "transaction_type" : "External", \
+            "external_channel" : "Card", \
+            "direction" : 1, \
+            "account" : {"id": 1234567 }, \
+            "related_currency":{"value" : "EUR"}, \
+            "amount" : 100.00, \
+            "card" :  \
+             { \
+                "card_bin" : "111111", \
+                "last_four_digits":"1111", \
+                "cardholder_name" : "John Smith", \
+                "valid_thru" : "09/2018" \
+             } \
+        }'
         
-curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" 
-     -d $MODEL https://testapi.copernicusgold.com/api/v1/transactions
+curl -X POST -H "Accept: application/json"
+             -H "Content-Type: application/json"
+             -H "Authorization: Bearer $TOKEN" 
+             -d $MODEL $API_HOST/api/v1/transactions
 ```
 
 ### RESPONSE:
@@ -71,7 +91,7 @@ curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -
     "details": "Fill or withdraw transaction",
     "direction": 1,
     "external_channel": "Card",
-    "id": 993901,
+    "id": 1234567,
     "modified": "2015-08-10T04:23:12.126+0000",
     "related_amount": 0,
     "related_currency": {
@@ -109,41 +129,53 @@ For information how to do that [see the link](./encryptcarddata.md).
 To link a transaction with a card you need to perform the 'validation' procedure, see the example below.
 
 ### REQUEST:
-       PUT     /api/v1/transactions/:id/validate
+```
+   PUT /api/v1/transactions/:id/validate
+```
 ### ARGUMENTS:
 
 ```
-    The request body: { 
-                        "transaction_type" : "External", 
-                        "external_channel" : "Card", 
-                        "direction" : 1, 
-                        "account" : { "id":"..." , ...}, 
-                        "amount" : "...", 
-                        "related_currency" : {"value" : "..."},
-                        "card" : { 
-                                    "id": "...",
-                                    "card_bin": "...",
-                                    "last_four_digits":"...",
-                                    "cardholder_name" : "...",
-                                    "valid_thru" : "...", 
-                                    "encrypt_data" : "..." 
-                                 }
-                     }
+{ 
+    "transaction_type" : "External", 
+    "external_channel" : "Card",
+    "id": ..., 
+    "direction" : 1, 
+    "account" : { "id":"..." , ...}, 
+    "amount" : "...", 
+    "related_currency" : {"value" : "..."},
+    "card" : 
+    { 
+        "id": "...",
+        "last_four_digits":"...",
+        "cardholder_name" : "...",
+        "valid_thru" : "...", 
+        "encrypt_data" : "..." 
+    }
+}
 ```
 ### EXAMPLE:
 
 ```bash
-TOKEN="your access token here"
-MODEL='{ "transaction_type" : "External", "external_channel" : "Card","direction" : 1, "account" : {"id": "650650"}, \
-         "related_currency":{"value" : "EUR"}, "amount" : 100.00, 
+MODEL='{ 
+         "id": 1234567,
+         "transaction_type" : "External", \
+         "external_channel" : "Card",\
+         "direction" : 1, \
+         "account" : {"id": "1234567"}, \
+         "related_currency":{"value" : "EUR"}, "amount" : 100.00,\ 
          "card" : 
-            {"card_bin" : "111111", "last_four_digits":"1111", "cardholder_name" : "John Smith", "valid_thru" : "09/18", 
-             "encrypt_data" : "adyenjs_0_1_16$1qxZVgjVyyziayLtky9UpQ18e7DeHU2OaGKiIpzD574CKSBdsWNtRNUIQJdfrEjQBfXG5Mw5/NbfAUbXolqdSEaIvocf+rWaf+Z7+jGlabJboCQWrFW3AFapRQ9BGHMyXXEn1CZfTYgc8A+A1BS1ctuG1GADrorFcvUH958XVABUwSYkUSifkqtBSaLzKpclCUXJx5FRE2y4EdgMBMNaAytBmpXOEFQuzDfl1bRF+GrQ0CXdn+k1CazySW7FdLFvrRv6K/mV3SrUHRTVy51ztwovDDNl9Wt6dXy5Xhdc0xw+Om5RPPvrqz6J5sEMGsIdKCK3VWwrYOyqCMqFd/rFBg==$r1RSGOiE0bfNyWYHQIlYjnhjKgsD1Q1cwqyDMnpGcSAdGwvIBik4VatqauebFEKQO634arRLpmTxD1e2w+bcPIM9pKeeQ/BZj5Kd6BFBXMuK/XqLaC//RKenDGKJqFNZmf8V3mzBKDN9w30/Wj8sVjb0Lxpnnj2Hxwv7ma3Z42CE25gJN4pgG+hQj+KIkN0u+41ADNYHUNgD72pjDVTZOB5oKWOgmYNsdj+z77XVpJMUjLr2nsGBG78RaCfLcA5eTspK/cKAukLi0dlyiKDlyZbe30/9nUfcoAmJjMTvdmq2/XZX3imPvFAQAdWvOqsQ3NmHdsv6eftuXLEYBlRGm2iNNaVwZ4tAx+YBApbyG6Ucqn2ysMFNo+qUAl8="
+            {
+                "last_four_digits":"1111", \
+                "cardholder_name" : "John Smith", \
+                "valid_thru" : "09/18",\ 
+                "encrypt_data" : "1qxZVgjVyyziayLtky9UpQ18e7DeHU2OaGKiIpzD574CKSBdsWNtRNUIQJdfrEjQBfXG5Mw5/NbfAUbXolqdSEaIvocf+rWaf+Z7+jGlabJboCQWrFW3AFapRQ9BGHMyXXEn1CZfTYgc8A+A1BS1ctuG1GADrorFcvUH958XVABUwSYkUSifkqtBSaLzKpclCUXJx5FRE2y4EdgMBMNaAytBmpXOEFQuzDfl1bRF+GrQ0CXdn+k1CazySW7FdLFvrRv6K/mV3SrUHRTVy51ztwovDDNl9Wt6dXy5Xhdc0xw+Om5RPPvrqz6J5sEMGsIdKCK3VWwrYOyqCMqFd/rFBg==$r1RSGOiE0bfNyWYHQIlYjnhjKgsD1Q1cwqyDMnpGcSAdGwvIBik4VatqauebFEKQO634arRLpmTxD1e2w+bcPIM9pKeeQ/BZj5Kd6BFBXMuK/XqLaC//RKenDGKJqFNZmf8V3mzBKDN9w30/Wj8sVjb0Lxpnnj2Hxwv7ma3Z42CE25gJN4pgG+hQj+KIkN0u+41ADNYHUNgD72pjDVTZOB5oKWOgmYNsdj+z77XVpJMUjLr2nsGBG78RaCfLcA5eTspK/cKAukLi0dlyiKDlyZbe30/9nUfcoAmJjMTvdmq2/XZX3imPvFAQAdWvOqsQ3NmHdsv6eftuXLEYBlRGm2iNNaVwZ4tAx+YBApbyG6Ucqn2ysMFNo+qUAl8="
             }
        }'
        
-curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" 
-     -d $MODEL https://api.projectdgc.com/api/v1/transactions/993901/validate
+curl -X PUT -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $TOKEN"\ 
+            -d "$MODEL" $API_HOST/api/v1/transactions/1234567/validate
 ```
 
 ### RESPONSE:
@@ -156,12 +188,11 @@ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H
             "value": "USD"
         },
         "description": "Bucks",
-        "id": 650650,
+        "id": 1234567,
         "type": "Common"
     },
     "amount": 100.0,
     "card": {
-        "card_bin":"411111",
         "last_four_digits":"1111",
         "cardholder_name": "John Smith",
         "valid_thru": "09/18"
@@ -171,7 +202,7 @@ curl -X PUT -H "Accept: application/json" -H "Content-Type: application/json" -H
     "details": "Fill or withdraw transaction",
     "direction": 1,
     "external_channel": "Card",
-    "id": 993901,
+    "id": 1234567,
     "modified": "2015-08-10T04:23:12.126+0000",
     "related_amount": 0,
     "related_currency": {
