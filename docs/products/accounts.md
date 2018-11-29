@@ -167,7 +167,7 @@ curl -X POST -H "Accept: application/json" \
 }
 ```
 
-Then you need to confirm the action. Please refer to [confirmation documentation](../../confirmations.md)
+Then you need to confirm the action. Please refer to [confirmation documentation](../confirmations.md)
 for more details on how to invoke confirmations.
 
 The example of the confirmation query for the SMS channel:
@@ -200,7 +200,7 @@ MODEL='{"id" : 1234567, "close_reason": "Just a need"}'
 curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/accounts/1234567/close -d "$MODEL"
 ```
 
-You need to always [confirm your query](../../confirmations.md) by the way which depends on your
+You need to always [confirm your query](../confirmations.md) by the way which depends on your
 authorization channel.
 
 The example for the confirmation via SMS:
@@ -243,5 +243,5 @@ curl -X GET -H "Accept: application/json" \
 ```
 
 After that you can specify this address value in the field 'contact' and the field 'contact_type' to be 'Address'
-in [creation of a transaction](../transactions/createtionransaction.md).
+in [creation of a transaction](../transactions/creationransaction.md).
 

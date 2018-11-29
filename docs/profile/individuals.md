@@ -93,5 +93,5 @@ Then, after storing all data you can submit the individual form.
 ```
 
 After that, the compliance status for the customer will be changed to 'Accepted' and then to 'Pending'.
-(please [see the link for more details](../models/customer.md).
+Please [see the link for more details](../models/customer.md).
 

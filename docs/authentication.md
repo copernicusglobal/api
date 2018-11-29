@@ -16,7 +16,7 @@ the usage of USSD or SMS services which interact with your final user as a secon
 
 This scenario is generally used in web applications because it requires interactive communication with the authentication
 server and the user's browser. To start the flow you need to configure a valid *redirect_url* parameter for your
-application. (see [Applications](./applications/applications.md)
+application. (see [Applications](./applications/applications.md))
 
 # Resource Password Flow
 

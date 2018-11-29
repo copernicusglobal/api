@@ -36,7 +36,7 @@ in all application-related queries.
 The application's password. Please refer to the [authentication section](../authentication.md) in order to see
 example of its usage in the OAuth2 authentication process.
 It is generated and appears just only once when the application is created but it is can be changed
-(see, [applications](../applications/applications.md).
+(see, [applications](../applications/applications.md)).
 
 ### grant_types
 

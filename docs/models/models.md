@@ -1,4 +1,4 @@
-# API models
+# API Models
 
 Here we provide a list of all API models that are used in the API requests and responses.
 
@@ -89,15 +89,17 @@ refer to the [specification introduction](../specification.md).
 8. [Details of Individuals](./individual.md)
 9. [Details of Corporate Entities](./corporate.md)
 10. [Fees](./fee.md)
-11. Directories:
-    1. [Legal Address](./directories/address.md)
-    2. [Asset](./directories/asset.md)
-    3. [Business Categories](./directories/businesscategory.md)
-    4. [Country](./directories/country.md)
-    5. [Common Directory](./directories/directory.md)
-    6. [Document Types](./directories/documents.md)
-    7. [Genders](./directory/gender.md)
-    
+11. [Asset](./asset.md)
+12. [Transaction](./transaction.md)    
+
+
+Directories:
+1. [Legal Address](./directories/address.md)
+3. [Business Categories](./directories/businesscategory.md)
+4. [Country](./directories/country.md)
+5. [Common Directory](./directories/directory.md)
+6. [Document Types](./directories/documents.md)
+7. [Genders](./directories/gender.md)
 
 
  

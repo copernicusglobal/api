@@ -41,4 +41,4 @@ curl -X PUT -H "Accept: application/json" \
 }
 ```
 
-All the fields are the same as for others transaction requests, [see transactions](../transactions.md)
+All the fields are the same as for others transaction requests, [see transactions](./transactions.md)

@@ -14,15 +14,15 @@ Here below, we provide a list of operations which allow to create, modify and ap
 types.
 
 - [Completed Transactions](./completedtransactions.md)
-- [Unconfirmed transactions, drafts](./uncompletedtransactions.md)
+- [Unconfirmed Transactions, drafts](./uncompletedtransactions.md)
 - [Details of Transactions](./detailsoftransaction.md)
-- [Creating New Transaction](./creationtransaction.md)
-- [Editing Transaction](./editingtransaction.md)
-- [Validating Transaction](./validatingtransaction.md)
-- [Signing Transaction](./signingransaction.md)
-- [Canceling Transaction](./cancelingtransaction.md)
-- [Deletion Transaction](./deletiontransaction.md)
-- [Number of Unconfirmed transactions or Drafts](./numberuncompletedtransactions.md)
+- [Creating New Transactions](./creationtransaction.md)
+- [Modifying Transactions](./editingtransaction.md)
+- [Validating Transactions](./validatingtransaction.md)
+- [Signing Transactions](./signingransaction.md)
+- [Canceling Transactions](./cancelingtransaction.md)
+- [Removing Transactions](./deletiontransaction.md)
+- [Number of Drafts](./numberuncompletedtransactions.md)
 
 # Special Types of Transactions
 

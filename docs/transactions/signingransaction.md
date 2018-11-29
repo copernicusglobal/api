@@ -3,7 +3,7 @@
 Queries a user to approve a transaction.
 
 First of all, this method changes the state of a transaction to '**Unconfirmed**' and sends a USSD query to the user's
-mobile phone or an SMS (please see [the confirmation section](../confirmations). 
+mobile phone or an SMS (please see [the confirmation section](../confirmations.md)). 
 
 ### REQUEST:
        PUT     /api/v1/transactions/:id/sign

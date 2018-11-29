@@ -4,9 +4,9 @@ Some functions can work for the current customer only. The system supports both 
 are accessible via a single authorized user. If you have added at least one corporate customer, you can switch
 your application between the default individual client and the new added corporate.
 
-1. [Retriving Current Customer](#Retrieving Current Customer)
-2. [Available Customers](#Available Customers)
-3. [Changing the Current Customer](#Changing the Current Customer)
+1. [Retriving Current Customer](#retrieving-current-customer)
+2. [Available Customers](#available-customers)
+3. [Changing the Current Customer](#changing-the-current-customer)
 
 
 # Retrieving Current Customer

@@ -23,7 +23,7 @@ The name of the city
 
 ### country
 
-A reference to the country of the address. Please refer to [the country directory](./directories/country.md)
+A reference to the country of the address. Please refer to [the country directory](./country.md)
 for details.
 
 ### postal_code

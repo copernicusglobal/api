@@ -1,4 +1,4 @@
-# Deletion a Transaction
+# Removing Transactions
 
 Deletes a transaction without a possibility to restore.
 

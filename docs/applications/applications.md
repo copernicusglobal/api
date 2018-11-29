@@ -5,7 +5,7 @@ financial transactions using different electronic assets including those you cre
 
 1. [Creating a new application](#creating-new-application)
 2. [Removing an Application](#removing-application)
-3. [Modifying an Application](#modifying-application)
+3. [Modifying an Application](#modifying-applications)
 4. [Obtaining Application Details](#obtaining-application-details)
 5. [Obtaining All Applications](#obtaining-all-applications)
 6. [Obtaining the Application of a Provider](#obtaining-by-provider)
