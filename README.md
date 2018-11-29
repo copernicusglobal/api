@@ -18,7 +18,7 @@ production mode the main host should be change to 'api.copernicusgold.com' inste
 In all examples here we use the **$API_HOST** variable for substitution of this 'https://testapi.copernicusgold.com' or
 'https://api.copernicusgold.com'.
 
-Several API operations connected with mostly with the authorization are located on the authorization host.
+Several API operations connected mostly with the authorization are located on the authorization host.
 In this case we use the **$AUTH_HOST** variable to denote 'https://testauth.copernicusgold.com' and 'https://auth.copernicusgold.com'
 for the test and production authorization server respectively.
 
@@ -35,4 +35,4 @@ headers).
 1. [Application Registration](./docs/applications/registration.md)
 2. [Authentication](./docs/authentication.md)
 3. [API Reference](./docs/specification.md)
-4. [API Models](./docs/models.md)
+4. [API Models](./docs/models/models.md)
