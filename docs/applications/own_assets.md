@@ -8,7 +8,7 @@ The fiat currencies can be currently: USD, EUR, SGD (Singapore Dollar). In the n
 will be increased. For additional details on asset objects please refer to [the asset model](../models/asset.md).
 
 You can open accounts using these standard assets, send such currencies between your clients (using 
-[transactions](../transactions/transactions.md)) or even [convert assets](./products/exchangetransaction.md) from one
+[transactions](../transactions/transactions.md)) or even [convert assets](../products/exchangetransaction.md) from one
 to others (using our market-based exchange rates).
 
 
