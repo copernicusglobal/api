@@ -3,9 +3,9 @@
 Messaging is a part of the System which allows users to communicate with the service provider. Currently, we support
 communication (in the form of a chat) with the Copernicus Gold technical support.
 
-1. [Getting a number of unread messages](#Getting a number of unread messages)
-2. [Retrieving Messages](#Retrieving Messages)
-3. [Submitting Messages](#Submitting Messages)
+1. [Getting a number of unread messages](#getting-a-number-of-unread-messages)
+2. [Retrieving Messages](#retrieving-messages)
+3. [Submitting Messages](#submitting-messages)
 4. [Uploading and Downloading Attachments](#uploading-and-downloading-attachments)
 
 
