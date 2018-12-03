@@ -3,7 +3,7 @@
 # General Information
 
 Here we provide the information about the Application Programming Interface (API)
-for [Copernicus Gold](https://www.copernicusgold.com) services which enables you to create applications, register users,
+for [Copernicus Gold (**CG**)](https://www.copernicusgold.com) services which enables you to create applications, register users,
 open accounts (wallets), replenish them, send funds to other people, organizations and even to create own
 digital assets.
 
@@ -19,8 +19,8 @@ In all examples here we use the **$API_HOST** variable for substitution of this 
 'https://api.copernicusgold.com'.
 
 Several API operations connected mostly with the authorization are located on the authorization host.
-In this case we use the **$AUTH_HOST** variable to denote 'https://testauth.copernicusgold.com' and 'https://auth.copernicusgold.com'
-for the test and production authorization server respectively.
+In this case we use the **$AUTH_HOST** variable to denote 'https://testauth.copernicusgold.com' and
+'https://auth.copernicusgold.com' for the test and production authorization server respectively.
 
 All examples of the API here were prepared with *cUrl* utility that can be downloaded from http://curl.haxx.se/download.html
 and usually is installed on most of OS platforms. The main reason to use it is to provide a clear way how exactly our
