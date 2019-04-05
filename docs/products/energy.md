@@ -7,7 +7,7 @@ measured in kilowatt-hours or megawatt-hours. The latter is used by Reneable Ene
 For such projects we utilize the data coming from some real devices, meters.
 
 1. [Retrieving Devices](#1-retrieving-devices)
-2. [Loading Transaction for Devices](#2-load-energy-transactions-for-a-device)
+2. [Loading Transaction for Devices](#2-loading-energy-transactions-for-a-device)
 3. [Daily Aggregations for Transactions](#3-loading-energy-transaction-groupped-by-days)
 4. [Loading RECs](#4-loading-recs)
 5. [List of Transactions for a REC](#5-retrieving-transaction-for-the-given-rec)
