@@ -48,4 +48,4 @@ determine an concrete error.
 7. [Creating Own Applications](./applications/applications.md)
     1. [Setting Own Fees](./applications/fees.md)
     2. [Creating Assets/Currencies](./applications/own_assets.md)
-8. [Rewenable Energy API](./products/energy.md)
+8. [Renewable Energy API](./products/energy.md)
