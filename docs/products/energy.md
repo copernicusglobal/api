@@ -14,6 +14,7 @@ for using CG to convert excess energy into RECs.
 4. [Loading RECs](#4-loading-recs)
 5. [List of Transactions for a REC](#5-retrieving-transaction-for-the-given-rec)
 6. [Loading RECs by a device](#6-loading-recs-by-a-device)
+7. [Creating Volume Adjustment Transactions](#7-creating-volume-adjustment-transactions)
 
 
 ## 1. Retrieving Devices 
