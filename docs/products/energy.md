@@ -439,3 +439,193 @@ curl -X GET -H "Accept: application/json" \
 ```
 
 The fields are the same as for [the previous request](#4-loading-recs).
+
+
+## 7. Creating Volume Adjustment Transactions
+
+The volume adjustment transactions allow to correct the total generated (or consumed) volume of the electricity
+stored in kWh wallets. By using this technique we may adjust the discrepancies which might occur during loading
+the data from the devices. The adjustment amount can be both positive or negative depending on whether we wish to
+increase or decrease the volume of kWh.
+
+As a consequence, by generating the volume adjustment transactions we postpone or, vice versa, speed up the subsequent
+issuance of RECs.
+
+### REQUEST
+
+```bash
+   POST api/v1/energy/adjustments -d $MODEL
+```
+
+### ARGUMENTS
+
+* **MODEL**  The body of the volume transaction. It contains the 'device' structure which is [the device details](#1-retrieving-devices)
+* **amount** The amount that should be used for the correction. Can be positive or negative.
+
+### EXAMPLE
+
+```bash
+MODEL='{
+    "device": { "external_id": "5c38b26915d03d01774f0921" },
+    "amount": 0.000000001
+}'
+
+curl -X POST -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/adjustments -d $MODEL
+```
+
+### RESPONSE
+
+```json
+{
+  "amount": 0.000000001,
+  "code": 0,
+  "id": 90604252,
+  "state": "Draft",
+  "created": "2019-12-27T11:02:51.590+0000",
+  "state_changed": "2019-12-27T11:02:51.590+0000",
+  "device": {
+    "id": 49912057,
+    "created": "2019-02-20T17:17:42.106+0000",
+    "modified": "2019-04-05T03:16:49.747+0000",
+    "name": "Hill Valley Site - Revenue Meter",
+    "external_id": "5c38b26915d03d01774f0921",
+    "node_type": "meter",
+    "state": "active",
+    "type": "solar"
+  },
+  "transaction": {}
+}
+   
+```
+
+Here we have a draft of the volume adjustment claim. We can modify its fields, for example:
+
+```bash
+MODEL='{
+    "id": 90604252
+    "device": { "external_id": "5c38b26915d03d01774f0921" },
+    "amount": 0.231342
+}'
+
+curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/adjustments/90604252  -d $MODEL
+```
+
+And finally, we need to confirm it by SMS. First, we initiate signing this volume adjustment claim:
+
+```bash
+MODEL='{
+    "id": 90604252
+    "device": { "external_id": "5c38b26915d03d01774f0921" },
+    "amount": 0.231342,
+    "confirm_channel": "SMS"
+}'
+
+curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/adjustments/90604252/sign  -d $MODEL
+```
+  
+The result will contain the original model with the OTP fields including the OTP number. Simultaneously, you will
+receive the text message to the phone number used in the authentication.
+
+```json
+{
+  "amount": 0.000000001,
+  "code": 0,
+  "id": 90604252,
+  "state": "Verified",
+  "created": "2019-12-27T11:02:51.590+0000",
+  "state_changed": "2019-12-27T11:02:51.590+0000",
+  "otp": "",
+  "otp_num": 10,
+  "confirm_channel": "SMS",
+  "device": {
+    "id": 49912057,
+    "created": "2019-02-20T17:17:42.106+0000",
+    "modified": "2019-04-05T03:16:49.747+0000",
+    "name": "Hill Valley Site - Revenue Meter",
+    "external_id": "5c38b26915d03d01774f0921",
+    "node_type": "meter",
+    "state": "active",
+    "type": "solar"
+  },
+  "transaction": {}
+}
+   
+```
+
+To complete the transaction we should set the 'otp' field in the model body above and call the confirm API endpoint:
+
+```bash
+MODEL='{
+  "amount": 0.000000001,
+  "code": 0,
+  "id": 90604252,
+  "state": "Verified",
+  "created": "2019-12-27T11:02:51.590+0000",
+  "state_changed": "2019-12-27T11:02:51.590+0000",
+  "otp": "1234",
+  "otp_num": 10,
+  "confirm_channel": "SMS",
+  "device": {
+    "id": 49912057,
+    "created": "2019-02-20T17:17:42.106+0000",
+    "modified": "2019-04-05T03:16:49.747+0000",
+    "name": "Hill Valley Site - Revenue Meter",
+    "external_id": "5c38b26915d03d01774f0921",
+    "node_type": "meter",
+    "state": "active",
+    "type": "solar"
+  },
+  "transaction": {}
+}'
+
+curl -X PUT -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/confirm/adjustment/90604252  -d $MODEL
+```
+
+The result will contain the volume adjustment claim in the 'Approved' state and the generated energy attribution
+transaction having the given amount:
+
+```json
+{
+  "amount": 0.000000001,
+  "code": 0,
+  "id": 90604252,
+  "state": "Approved",
+  "created": "2019-12-27T11:02:51.590+0000",
+  "state_changed": "2019-12-27T11:02:51.590+0000",
+  "device": {
+    "id": 49912057,
+    "created": "2019-02-20T17:17:42.106+0000",
+    "modified": "2019-04-05T03:16:49.747+0000",
+    "name": "Hill Valley Site - Revenue Meter",
+    "external_id": "5c38b26915d03d01774f0921",
+    "node_type": "meter",
+    "state": "active",
+    "type": "solar"
+  },
+  "transaction": {
+    "id": 90607450,
+    "state": "New",
+    "created": "2019-12-27T11:57:22.289+0000",
+    "value": 1e-09,
+    "effective_time": "2019-12-27T11:02:51.590+0000",
+    "category": "GENERAL"
+  }
+}
+   
+```
+
+In the case if you need to specify a certain effective time when the transaction should be placed, you may set this
+value in the original volume adjustment claim. Also, you can define the ID (external_id) for your transaction:
+
+```bash
+MODEL='{
+    "device": { 
+        "external_id": "5c38b26915d03d01774f0921" 
+    },
+    "amount": 0.000000001,
+    "effective_time": "2019-12-27T10:00:00.000+0000",
+    "external_id": "some ID in the external system"
+}'
+
+curl -X POST -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/adjustments -d $MODEL
+```
