@@ -236,7 +236,7 @@ curl -X GET -H "Accept: application/json" \
 
 ## 4. Loading RECs
 
-The below request allows to retrieve RECs belonging to a specific customer:
+The below request allows retrieving RECs belonging to the current customer.
 
 ### REQUEST
 
@@ -248,12 +248,20 @@ GET 'api/v1/energy/recs?page=...&per_page=...'
 
 * **page** - the number of the page to retrieve
 * **per_page** - the number of items per page
+* **sort=+created** or **sort=-created** - sorting RECs by their creation date in the ascending (+) or
+the descending (-) order. The default sorting order is DESC (recent RECs are first).
+* **from** and **to** - the dates of RECs for filtration. The format is yyyy-MM-dd
 
 ### EXAMPLE
 
 ```bash
 curl -X GET -H "Accept: application/json" \
             -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/recs?page=0&per_page=25
+```
+```bash
+curl -X GET -H "Accept: application/json" \
+            -H "Authorization: Bearer $TOKEN" 
+            $API_HOST/api/v1/energy/recs?page=0&per_page=25&from=2020-05-01&sort=-created
 ```
 
 ### RESPONSE
@@ -295,9 +303,9 @@ curl -X GET -H "Accept: application/json" \
 * **value** - the nominee value of the REC (1 MWh usually)
 * **sources** - a list of the devices where the REC was generated
 
-## 5. Retrieving Transaction for the Given REC
+## 5. Retrieving Transactions for the Given REC
 
-The below request allows to view exact transactions that made up each REC:
+The below request allows viewing exact transactions that made up each REC:
 
 
 ### REQUEST
@@ -316,7 +324,8 @@ GET 'api/v1/energy/recs/{id}?page=0&per_page=50'
 
 ```bash
 curl -X GET -H "Accept: application/json" \
-            -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/recs/52882650?page=0&per_page=25
+            -H "Authorization: Bearer $TOKEN" 
+            $API_HOST/api/v1/energy/recs/52882650?page=0&per_page=25
 ```
 
 ### RESPONSE
@@ -387,7 +396,7 @@ you can see the "remainder" field in the last transaction used in the REC accumu
 
 ## 6. Loading RECs by a device
 
-The below request allows to retrieve RECs of a concrete device
+The below request allows retrieving RECs of a concrete device
 
 ### REQUEST
 
@@ -400,12 +409,16 @@ GET 'api/v1/energy/recs/devices/{deviceId}?page=...&per_page=...'
 * **deviceId** The ID of the device, e.g. '5c38b26915d03d01774f0921'
 * **page** - the number of the page to retrieve
 * **per_page** - the number of items per page
+* **sort=+created** or **sort=-created** - sorting RECs by their creation date in the ascending (+) or
+the descending (-) order. The default sorting order is DESC (recent RECs are first).
+* **from** and **to** - the dates of RECs for filtration. The format is yyyy-MM-dd
 
 ### EXAMPLE
 
 ```bash
 curl -X GET -H "Accept: application/json" \
-            -H "Authorization: Bearer $TOKEN" $API_HOST/api/v1/energy/recs/devices/5c38b26915d03d01774f0921?page=0&per_page=25
+            -H "Authorization: Bearer $TOKEN" \
+            $API_HOST/api/v1/energy/recs/devices/5c38b26915d03d01774f0921?page=0&sort=+created&from=2019-03-01&to=2020-05-01&per_page=25
 ```
 
 ### RESPONSE
@@ -439,7 +452,13 @@ curl -X GET -H "Accept: application/json" \
 ]
 ```
 
-The fields are the same as for [the previous request](#4-loading-recs).
+* **total** - the total number of items
+* **hash** - the hash of the corresponding blockchain transaction
+* **height** - the height of the block in the blockchain where the REC was placed
+* **state** - the state of the REC. It can be 'New' (just created), 'Pending' (expecting a confirmation from the blockchain),
+  'Processed' (the confirmation received)
+* **value** - the nominee value of the REC (1 MWh usually)
+* **sources** - a list of the devices where the REC was generated
 
 
 ## 7. Creating Volume Adjustment Transactions
